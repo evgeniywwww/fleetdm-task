@@ -1,0 +1,21 @@
+name: Helm CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  helm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+
+      - name: Helm lint
+        run: helm lint ./fleetdm
+
+      - name: Helm template
+        run: helm template fleetdm ./fleetdm

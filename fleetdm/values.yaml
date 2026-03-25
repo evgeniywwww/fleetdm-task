@@ -2,39 +2,22 @@ fleetdm:
   image:
     repository: fleetdm/fleet
     tag: v4.64.0
-
   replicas: 1
-
   serverAddress: "0.0.0.0:8080"
-
-  mysql:
-    port: 3306
-    database: fleet
-    username: fleet
-    passwordSecretKey: mysql-password
-
   redis:
     port: 6379
     database: "0"
     passwordSecretKey: redis-password
-
   service:
     type: ClusterIP
     port: 8080
 
 mysql:
-  enabled: true
-  architecture: standalone
-  auth:
-    rootPassword: ""
-    database: fleet
-    username: fleet
-    password: ""
-    existingSecret: ""
-  primary:
-    persistence:
-      enabled: true
-      size: 20Gi
+  image: mysql:8.0
+  port: 3306
+  database: fleet
+  user: fleet
+  password: ""
 
 redis:
   enabled: true
@@ -43,7 +26,3 @@ redis:
     enabled: true
     password: ""
     existingSecret: ""
-  master:
-    persistence:
-      enabled: true
-      size: 8Gi

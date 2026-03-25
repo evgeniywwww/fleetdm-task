@@ -23,16 +23,16 @@ spec:
             - name: FLEET_SERVER_ADDRESS
               value: {{ .Values.fleetdm.serverAddress | quote }}
             - name: FLEET_MYSQL_ADDRESS
-              value: "{{ .Release.Name }}-mysql:{{ .Values.fleetdm.mysql.port }}"
+              value: "{{ .Release.Name }}-mysql:{{ .Values.mysql.port }}"
             - name: FLEET_MYSQL_DATABASE
-              value: {{ .Values.fleetdm.mysql.database | quote }}
+              value: {{ .Values.mysql.database | quote }}
             - name: FLEET_MYSQL_USERNAME
-              value: {{ .Values.fleetdm.mysql.username | quote }}
+              value: {{ .Values.mysql.user | quote }}
             - name: FLEET_MYSQL_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ .Release.Name }}-mysql
-                  key: {{ .Values.fleetdm.mysql.passwordSecretKey | quote }}
+                  key: mysql-password
             - name: FLEET_REDIS_ADDRESS
               value: "{{ .Release.Name }}-redis-master:{{ .Values.fleetdm.redis.port }}"
             - name: FLEET_REDIS_DATABASE
@@ -42,3 +42,9 @@ spec:
                 secretKeyRef:
                   name: {{ .Release.Name }}-redis
                   key: {{ .Values.fleetdm.redis.passwordSecretKey | quote }}
+            - name: FLEET_SERVER_TLS
+              value: "false"
+            - name: FLEET_OSQUERY_ENABLE_TLS
+              value: "false"
+            - name: FLEET_INSECURE
+              value: "true"
