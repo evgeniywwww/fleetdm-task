@@ -1,0 +1,38 @@
+name: Helm chart release
+
+on:
+  push:
+    tags:
+      - "fleetdm-chart-v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+
+      - name: Lint
+        run: helm lint ./fleetdm
+
+      - name: Template
+        run: helm template fleetdm ./fleetdm
+
+      - name: Build dependencies
+        run: helm dependency build ./fleetdm
+
+      - name: Package chart
+        run: |
+          mkdir -p dist
+          helm package ./fleetdm --destination dist
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.tgz
